@@ -1,0 +1,1 @@
+# cat-dynamic-theme-chrome-ex
