@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "Google Background Changer",
+    "version": "1.0",
+    "description": "Changes the background of Google to a random color.",
+    "icons": {
+        "16": "cat.png",
+        "48": "cat.png",
+        "128": "cat.png"
+    },
+    "content_scripts": [
+        {
+            "matches": ["https://www.google.com/"],
+            "css": ["style.css"]
+        }
+    ]
+}
