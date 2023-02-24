@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Google Background Changer",
+    "name": "Cat gifs Wallpaper",
     "version": "1.0",
-    "description": "Changes the background of Google to a random color.",
+    "description": "See a new cat gif everyday on every tab refresh <3",
     "icons": {
         "16": "cat.png",
         "48": "cat.png",
