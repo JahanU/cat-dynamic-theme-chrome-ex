@@ -1,5 +1,5 @@
 html body {
-  /* background-image dynamically injected by content.js to bypass CSP */
+  background-image: url("https://cataas.com/cat/gif") !important;
 
   /* Center and scale the image nicely */
   background-position: center !important;

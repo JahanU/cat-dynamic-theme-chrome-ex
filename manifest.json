@@ -11,16 +11,31 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["tabs"],
-  "host_permissions": ["https://cataas.com/*"],
+  "permissions": [
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://cataas.com/*"
+  ],
   "content_scripts": [
-      {
-          "matches": [
-            "https://www.google.com/*",
-            "https://search.brave.com/*"
-          ],
-          "css": ["style.css"],
-          "js": ["content.js"]
-      }
+    {
+      "matches": [
+        "https://www.google.com/*"
+      ],
+      "css": [
+        "style-google.css"
+      ]
+    },
+    {
+      "matches": [
+        "https://search.brave.com/*"
+      ],
+      "css": [
+        "style-brave.css"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
   ]
 }
