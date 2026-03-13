@@ -1,8 +1,9 @@
 html body {
-    background-image: url(https://cataas.com/cat/gif);
+  /* background-image dynamically injected by content.js to bypass CSP */
 
   /* Center and scale the image nicely */
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: contain;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-size: cover !important;
+  background-attachment: fixed !important;
 }

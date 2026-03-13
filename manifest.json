@@ -9,13 +9,19 @@
     "128": "cat.png"
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "type": "module"
   },
   "permissions": ["tabs"],
+  "host_permissions": ["https://cataas.com/*"],
   "content_scripts": [
       {
-          "matches": ["https://www.google.com/"],
-          "css": ["style.css"]
+          "matches": [
+            "https://www.google.com/*",
+            "https://search.brave.com/*"
+          ],
+          "css": ["style.css"],
+          "js": ["content.js"]
       }
   ]
 }
