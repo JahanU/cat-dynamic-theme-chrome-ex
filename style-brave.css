@@ -1,7 +1,4 @@
 html body {
   /* background-image dynamically injected by content.js to bypass CSP */
-  background-position: center !important;
-  background-repeat: no-repeat !important;
   background-size: cover !important;
-  background-attachment: fixed !important;
 }
