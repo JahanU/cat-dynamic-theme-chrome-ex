@@ -20,7 +20,8 @@
   "content_scripts": [
     {
       "matches": [
-        "https://www.google.com/*"
+        "https://www.google.com/",
+        "https://www.google.com/webhp*"
       ],
       "css": [
         "style-google.css"
@@ -28,7 +29,7 @@
     },
     {
       "matches": [
-        "https://search.brave.com/*"
+        "https://search.brave.com/"
       ],
       "css": [
         "style-brave.css"
