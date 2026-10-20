@@ -4,6 +4,7 @@ A simple and fun browser extension that shows a random, adorable cat gif as your
 
 ## Features
 - Replaces the new tab page with a full-screen cat gif from [CATAAS (Cats as a service)](https://cataas.com/).
+- Optional greeting: set your name in the extension's **Options** and the cat says "Hello {name}" in a random font, size and colour.
 - Works in Chromium-based browsers, including Chrome and Brave.
 
 ## How it Works
@@ -21,4 +22,5 @@ To install the extension locally for testing or personal use:
 3. Enable **Developer mode** (usually a toggle in the top right corner).
 4. Click the **Load unpacked** button.
 5. Select the `cat-dynamic-theme-chrome-ex` folder you downloaded.
-6. Open a new tab and enjoy the cats! (Chrome may ask once whether to keep the extension's new tab page — choose **Keep it**.)
+6. Optional: right-click the extension's icon, choose **Options**, and enter your name.
+7. Open a new tab and enjoy the cats! (Chrome may ask once whether to keep the extension's new tab page — choose **Keep it**.)

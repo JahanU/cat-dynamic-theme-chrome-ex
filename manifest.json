@@ -8,6 +8,13 @@
     "48": "cat.png",
     "128": "cat.png"
   },
+  "permissions": [
+    "storage"
+  ],
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": false
+  },
   "chrome_url_overrides": {
     "newtab": "newtab.html"
   }
