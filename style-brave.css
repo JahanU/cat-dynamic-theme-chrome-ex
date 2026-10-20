@@ -1,4 +1,0 @@
-html body {
-  /* background-image dynamically injected by content.js to bypass CSP */
-  background-size: cover !important;
-}

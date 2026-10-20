@@ -1,16 +1,15 @@
 # Cat Dynamic Theme - Chrome & Brave Extension
 
-A simple and fun browser extension that adds a random, adorable cat gif as your wallpaper whenever you open a new tab!
+A simple and fun browser extension that shows a random, adorable cat gif as your wallpaper whenever you open a new tab!
 
 ## Features
-- Overrides the default new tab experience to display a full-screen, high-quality cat gif sourced from [CATAAS (Cats as a service)](https://cataas.com/).
-- **Chrome Support**: Fast, native CSS injection on `google.com`.
-- **Brave Browser Support**: Automatically detects Brave and overrides `search.brave.com`. Includes a background service worker architecture to dynamically inject the image as a Base64 Data URI, bypassing Brave Search's strict Content Security Policy (CSP).
+- Replaces the new tab page with a full-screen cat gif from [CATAAS (Cats as a service)](https://cataas.com/).
+- Works in Chromium-based browsers, including Chrome and Brave.
 
 ## How it Works
-Due to strict browser security preventing extensions from injecting code directly into the native `chrome://newtab/` or `brave://newtab/` pages, this extension works by detecting when a new empty tab is created and instantly redirecting it to a search engine. 
+The extension overrides the browser's new tab page (`chrome_url_overrides`) with its own `newtab.html`, which sets a random gif from `https://cataas.com/cat/gif` as the page background.
 
-It checks the browser type and redirects to `https://google.com` (for Chrome users) or `https://search.brave.com/` (for Brave users). It then seamlessly injects CSS and Content Scripts onto those domains to set the cat gif as the page background.
+Chromium doesn't let extensions modify the built-in new tab page itself, so the extension provides its own page instead.
 
 ## Installation (Developer Mode)
 To install the extension locally for testing or personal use:
@@ -22,4 +21,4 @@ To install the extension locally for testing or personal use:
 3. Enable **Developer mode** (usually a toggle in the top right corner).
 4. Click the **Load unpacked** button.
 5. Select the `cat-dynamic-theme-chrome-ex` folder you downloaded.
-6. Open a new tab and enjoy the cats!
+6. Open a new tab and enjoy the cats! (Chrome may ask once whether to keep the extension's new tab page — choose **Keep it**.)

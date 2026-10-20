@@ -1,42 +1,14 @@
 {
   "manifest_version": 3,
   "name": "Cat gifs Wallpaper",
-  "version": "1.0",
-  "description": "See a new cat gif everyday",
+  "version": "2.0",
+  "description": "See a new cat gif every time you open a tab",
   "icons": {
     "16": "cat.png",
     "48": "cat.png",
     "128": "cat.png"
   },
-  "background": {
-    "service_worker": "background.js"
-  },
-  "permissions": [
-    "tabs"
-  ],
-  "host_permissions": [
-    "https://cataas.com/*"
-  ],
-  "content_scripts": [
-    {
-      "matches": [
-        "https://www.google.com/",
-        "https://www.google.com/webhp*"
-      ],
-      "css": [
-        "style-google.css"
-      ]
-    },
-    {
-      "matches": [
-        "https://search.brave.com/"
-      ],
-      "css": [
-        "style-brave.css"
-      ],
-      "js": [
-        "content.js"
-      ]
-    }
-  ]
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  }
 }
