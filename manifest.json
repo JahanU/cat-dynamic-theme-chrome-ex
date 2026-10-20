@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Cat gifs Wallpaper",
   "version": "2.0",
-  "description": "See a new cat gif every time you open a tab",
+  "description": "Cat gifs Wallpaper",
   "icons": {
     "16": "cat.png",
     "48": "cat.png",
