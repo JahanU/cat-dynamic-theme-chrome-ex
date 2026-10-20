@@ -1,10 +1,16 @@
 <!doctype html>
+<!-- Replaces the browser's new tab page (see chrome_url_overrides in manifest.json) -->
 <title>New Tab</title>
 <style>
+  /* Wallpaper layout, the same way Chrome shows its own new tab backgrounds:
+     fill the screen, keep the gif's shape, crop evenly from the centre.
+     background-attachment: fixed sizes the gif to the window, since the page has no content.
+     The gif itself is set by newtab.js. */
   body {
-    background-image: url("https://cataas.com/cat/gif");
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
   }
 </style>
+<!-- type="module" allows top-level await in newtab.js -->
+<script type="module" src="newtab.js"></script>
