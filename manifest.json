@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Cat gifs Wallpaper",
+  "name": "Tabby Tab – Cat wallpaper",
   "version": "2.0",
-  "description": "Cat gifs Wallpaper",
+  "description": "Tabby Tab – Cat wallpaper",
   "icons": {
     "16": "cat.png",
     "48": "cat.png",
