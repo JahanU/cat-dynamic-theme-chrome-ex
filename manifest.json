@@ -8,6 +8,9 @@
     "48": "cat.png",
     "128": "cat.png"
   },
+  "background": {
+    "service_worker": "background.js"
+  },
   "chrome_url_overrides": {
     "newtab": "newtab.html"
   }

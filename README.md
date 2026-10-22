@@ -7,7 +7,7 @@ A simple and fun browser extension that shows a random, adorable cat gif as your
 - Works in Chromium-based browsers, including Chrome and Brave.
 
 ## How it Works
-The extension overrides the browser's new tab page (`chrome_url_overrides`) with its own `newtab.html`, which sets a random gif from `https://cataas.com/cat/gif` as the page background. Each tab shows a gif saved by the previous tab, then downloads the next one in the background, so the wallpaper appears instantly.
+The extension overrides the browser's new tab page (`chrome_url_overrides`) with its own `newtab.html`, which sets a random gif from `https://cataas.com/cat/gif` as the page background. Each tab shows a gif saved earlier, so the wallpaper appears instantly, and asks the extension's background script (`background.js`) to download the next one. The download runs in the background, so it keeps going if the tab is refreshed or closed.
 
 Chromium doesn't let extensions modify the built-in new tab page itself, so the extension provides its own page instead.
 
