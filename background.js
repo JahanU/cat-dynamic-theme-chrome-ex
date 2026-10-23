@@ -20,10 +20,17 @@ let downloading = null;
 // Only an OK response is saved, so a failed request never replaces the saved cat with an error page.
 // It's saved ready to use as a data URL, so the gif is encoded once rather than for every tab.
 const downloadNext = async () => {
-  const next = await fetch(CAT_URL);
-  if (!next.ok) return;
-  const cat = `data:${next.headers.get("content-type")};base64,${new Uint8Array(await next.arrayBuffer()).toBase64()}`;
-  await (await caches.open("cat-urls")).put(CAT_URL, new Response(cat));
+  // The browser stops this background script after 30s with no extension calls, even mid-download,
+  // so a cheap call every 20s keeps it running on a slow connection.
+  const keepAlive = setInterval(chrome.runtime.getPlatformInfo, 20e3);
+  try {
+    const next = await fetch(CAT_URL);
+    if (!next.ok) return;
+    const cat = `data:${next.headers.get("content-type")};base64,${new Uint8Array(await next.arrayBuffer()).toBase64()}`;
+    await (await caches.open("cat-urls")).put(CAT_URL, new Response(cat));
+  } finally {
+    clearInterval(keepAlive);
+  }
 };
 
 // Version 2.0 saved the raw gif in "cats". It's no longer read, so free the space.
