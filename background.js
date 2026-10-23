@@ -18,21 +18,27 @@ const CAT_URL = "https://cataas.com/cat/gif";
 let downloading = null;
 
 // Only an OK response is saved, so a failed request never replaces the saved cat with an error page.
+// It's saved ready to use as a data URL, so the gif is encoded once rather than for every tab.
 const downloadNext = async () => {
   const next = await fetch(CAT_URL);
-  if (next.ok) await (await caches.open("cats")).put(CAT_URL, next);
+  if (!next.ok) return;
+  const cat = `data:${next.headers.get("content-type")};base64,${new Uint8Array(await next.arrayBuffer()).toBase64()}`;
+  await (await caches.open("cat-urls")).put(CAT_URL, new Response(cat));
 };
+
+// Version 2.0 saved the raw gif in "cats". It's no longer read, so free the space.
+chrome.runtime.onInstalled.addListener(() => caches.delete("cats"));
 
 // content.js asks for a cat and gets it back as a data URL. Google's page can't
 // read the extension's saved downloads, but it can show a data URL.
 const getCat = async () => {
-  const cache = await caches.open("cats");
+  const cache = await caches.open("cat-urls");
   let cat = await cache.match(CAT_URL);
   // A failed download is ignored: the saved cat stays, and the next tab tries again.
   downloading ??= downloadNext().catch(() => {}).finally(() => (downloading = null));
   // Very first tab (nothing saved yet): wait for the download.
   if (!cat) cat = await downloading.then(() => cache.match(CAT_URL));
-  return cat && `data:${cat.headers.get("content-type")};base64,${new Uint8Array(await cat.arrayBuffer()).toBase64()}`;
+  return cat?.text();
 };
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
