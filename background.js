@@ -32,7 +32,7 @@ const getCat = async () => {
   downloading ??= downloadNext().catch(() => {}).finally(() => (downloading = null));
   // Very first tab (nothing saved yet): wait for the download.
   if (!cat) cat = await downloading.then(() => cache.match(CAT_URL));
-  return cat && `data:image/gif;base64,${new Uint8Array(await cat.arrayBuffer()).toBase64()}`;
+  return cat && `data:${cat.headers.get("content-type")};base64,${new Uint8Array(await cat.arrayBuffer()).toBase64()}`;
 };
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
