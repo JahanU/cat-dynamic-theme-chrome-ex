@@ -9,6 +9,6 @@ form.onsubmit = async (e) => {
   e.preventDefault();
   await chrome.storage.sync.set({ name: form.name.value.trim() });
   // Drop the saved cat so the next tab greets with the new name, not the old one
-  await caches.delete("cats");
+  await chrome.storage.local.remove("cat");
   form.querySelector("output").textContent = "Saved!";
 };

@@ -3,14 +3,12 @@
 A simple and fun browser extension that shows a random, adorable cat gif as your wallpaper whenever you open a new tab!
 
 ## Features
-- Replaces the new tab page with a full-screen cat gif from [CATAAS (Cats as a service)](https://cataas.com/).
+- Opens new tabs on the Google homepage with a full-screen cat gif from [CATAAS (Cats as a service)](https://cataas.com/) behind it.
 - Optional greeting: set your name in the extension's **Options** and the cat says "Hello {name}" in a random font, size and colour.
 - Works in Chromium-based browsers, including Chrome and Brave.
 
 ## How it Works
-The extension overrides the browser's new tab page (`chrome_url_overrides`) with its own `newtab.html`, which sets a random gif from `https://cataas.com/cat/gif` as the page background. Each tab shows a gif saved by the previous tab, then downloads the next one in the background, so the wallpaper appears instantly.
-
-Chromium doesn't let extensions modify the built-in new tab page itself, so the extension provides its own page instead.
+Chromium doesn't let extensions modify the built-in new tab page, so `background.js` sends each new blank tab to `https://www.google.com/`. A content script there sets a gif from `https://cataas.com/cat/gif` as the page background. Each tab shows a gif saved by the previous tab while the next one downloads in the background, so the wallpaper appears instantly.
 
 ## Installation (Developer Mode)
 To install the extension locally for testing or personal use:
@@ -23,4 +21,4 @@ To install the extension locally for testing or personal use:
 4. Click the **Load unpacked** button.
 5. Select the `cat-dynamic-theme-chrome-ex` folder you downloaded.
 6. Optional: right-click the extension's icon, choose **Options**, and enter your name.
-7. Open a new tab and enjoy the cats! (Chrome may ask once whether to keep the extension's new tab page — choose **Keep it**.)
+7. Open a new tab and enjoy the cats!
