@@ -14,8 +14,8 @@ chrome.tabs.onCreated.addListener((tab) => {
 const CAT_URL = "https://cataas.com/cat/gif";
 
 // Downloads a new cat, saves it for the next tab and returns it.
-// It's saved as a data URL (the gif written out as text), which can be sent to
-// Google's page in a message and used directly in its CSS.
+// The gif is saved as base64 (its bytes written out as text), since messages to
+// Google's page can only carry text. content.js turns it back into a gif.
 const downloadNext = async () => {
   // The browser stops this background script after 30s with no extension calls, even mid-download,
   // so a cheap call every 20s keeps it running on a slow connection.
@@ -25,7 +25,7 @@ const downloadNext = async () => {
     if (!gif.ok) return; // Keep the saved cat rather than save an error page
     const type = gif.headers.get("content-type");
     const base64 = new Uint8Array(await gif.arrayBuffer()).toBase64();
-    const cat = `data:${type};base64,${base64}`;
+    const cat = { type, base64 };
     await chrome.storage.local.set({ cat });
     return cat;
   } finally {

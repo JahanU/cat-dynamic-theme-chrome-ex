@@ -2,7 +2,7 @@
    fill the screen, keep the gif's shape, crop evenly from the centre.
    !important beats Google's own page styles, which would otherwise win. */
 body {
-  /* The cat, as a data URL set by content.js. Until it arrives --cat is unset,
+  /* The cat, as a blob: URL set by content.js. Until it arrives --cat is unset,
      so this falls back to no image and Google's own background shows. */
   background-image: var(--cat) !important;
   /* Scale the gif to cover the whole page, cropping the edges rather than stretching it */
