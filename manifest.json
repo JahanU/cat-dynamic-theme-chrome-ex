@@ -18,6 +18,12 @@
       "css": ["style.css"],
       "js": ["content.js"],
       "run_at": "document_start"
+    },
+    {
+      "matches": ["https://search.brave.com/", "https://search.brave.com/?*"],
+      "css": ["style.css", "brave.css"],
+      "js": ["content.js"],
+      "run_at": "document_start"
     }
   ]
 }
