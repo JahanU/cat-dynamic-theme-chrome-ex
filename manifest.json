@@ -14,7 +14,7 @@
   "permissions": ["tabs"],
   "content_scripts": [
     {
-      "matches": ["https://www.google.com/"],
+      "matches": ["https://www.google.com/", "https://www.google.com/?*", "https://www.google.com/webhp*"],
       "css": ["style.css"],
       "js": ["content.js"],
       "run_at": "document_start"
