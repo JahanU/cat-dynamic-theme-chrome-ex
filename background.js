@@ -33,10 +33,17 @@ const downloadNext = async () => {
   }
 };
 
+// The download in progress, if any. A tab that opens mid-download shares it
+// instead of starting a second one.
+let downloading = null;
+
 // Returns the saved cat, and starts downloading the next one.
 const getCat = async () => {
-  // A failed download is ignored: the saved cat stays, and the next tab tries again.
-  const next = downloadNext().catch(() => {});
+  if (!downloading) {
+    // A failed download is ignored: the saved cat stays, and the next tab tries again.
+    downloading = downloadNext().catch(() => {}).finally(() => (downloading = null));
+  }
+  const next = downloading; // Kept here, as `downloading` is cleared once it finishes
   const { cat } = await chrome.storage.local.get("cat");
   // Very first tab (nothing saved yet): wait for the download.
   return cat ?? (await next);
