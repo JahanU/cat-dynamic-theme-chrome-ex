@@ -8,7 +8,16 @@
     "48": "cat.png",
     "128": "cat.png"
   },
-  "chrome_url_overrides": {
-    "newtab": "newtab.html"
-  }
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["tabs"],
+  "content_scripts": [
+    {
+      "matches": ["https://www.google.com/"],
+      "css": ["style.css"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ]
 }

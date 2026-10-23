@@ -1,0 +1,9 @@
+/* Wallpaper layout, the same way Chrome shows its own new tab backgrounds:
+   fill the screen, keep the gif's shape, crop evenly from the centre.
+   --cat is set by content.js; until then Google's own background shows. */
+body {
+  background-image: var(--cat) !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-attachment: fixed !important;
+}
