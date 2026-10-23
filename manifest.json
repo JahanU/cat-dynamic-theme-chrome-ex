@@ -1,14 +1,23 @@
 {
   "manifest_version": 3,
-  "name": "Cat gifs Wallpaper",
-  "version": "2.0",
-  "description": "Cat gifs Wallpaper",
+  "name": "Tabby Tab – Cat wallpaper",
+  "version": "2.1",
+  "description": "Tabby Tab – Cat wallpaper",
   "icons": {
     "16": "cat.png",
     "48": "cat.png",
     "128": "cat.png"
   },
-  "chrome_url_overrides": {
-    "newtab": "newtab.html"
-  }
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": ["tabs", "storage", "unlimitedStorage"],
+  "content_scripts": [
+    {
+      "matches": ["https://www.google.com/", "https://www.google.com/?*", "https://www.google.com/webhp*"],
+      "css": ["style.css"],
+      "js": ["content.js"],
+      "run_at": "document_start"
+    }
+  ]
 }
