@@ -29,9 +29,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   (async () => {
     const cache = await caches.open("cats");
     let cat = await cache.match(CAT_URL);
-    downloading ??= downloadNext().finally(() => (downloading = null));
+    // A failed download is ignored: the saved cat stays, and the next tab tries again.
+    downloading ??= downloadNext().catch(() => {}).finally(() => (downloading = null));
     // Very first tab (nothing saved yet): wait for the download.
-    if (!cat) cat = await downloading.then(() => cache.match(CAT_URL), () => null);
+    if (!cat) cat = await downloading.then(() => cache.match(CAT_URL));
     sendResponse(cat && `data:image/gif;base64,${new Uint8Array(await cat.arrayBuffer()).toBase64()}`);
   })();
   return true; // Keep the message open until we reply
