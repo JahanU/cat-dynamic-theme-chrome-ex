@@ -25,15 +25,18 @@ const downloadNext = async () => {
 
 // content.js asks for a cat and gets it back as a data URL. Google's page can't
 // read the extension's saved downloads, but it can show a data URL.
+const getCat = async () => {
+  const cache = await caches.open("cats");
+  let cat = await cache.match(CAT_URL);
+  // A failed download is ignored: the saved cat stays, and the next tab tries again.
+  downloading ??= downloadNext().catch(() => {}).finally(() => (downloading = null));
+  // Very first tab (nothing saved yet): wait for the download.
+  if (!cat) cat = await downloading.then(() => cache.match(CAT_URL));
+  return cat && `data:image/gif;base64,${new Uint8Array(await cat.arrayBuffer()).toBase64()}`;
+};
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  (async () => {
-    const cache = await caches.open("cats");
-    let cat = await cache.match(CAT_URL);
-    // A failed download is ignored: the saved cat stays, and the next tab tries again.
-    downloading ??= downloadNext().catch(() => {}).finally(() => (downloading = null));
-    // Very first tab (nothing saved yet): wait for the download.
-    if (!cat) cat = await downloading.then(() => cache.match(CAT_URL));
-    sendResponse(cat && `data:image/gif;base64,${new Uint8Array(await cat.arrayBuffer()).toBase64()}`);
-  })();
+  // Always reply, even if reading the saved cat fails, so the tab isn't left waiting.
+  getCat().then(sendResponse, () => sendResponse());
   return true; // Keep the message open until we reply
 });
