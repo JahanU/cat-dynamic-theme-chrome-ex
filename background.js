@@ -13,43 +13,37 @@ chrome.tabs.onCreated.addListener((tab) => {
 
 const CAT_URL = "https://cataas.com/cat/gif";
 
-// The download in progress, if any. A tab that opens mid-download joins it
-// instead of starting a second one.
-let downloading = null;
-
-// Only an OK response is saved, so a failed request never replaces the saved cat with an error page.
-// It's saved ready to use as a data URL, so the gif is encoded once rather than for every tab.
+// Downloads a new cat, saves it for the next tab and returns it.
+// It's saved as a data URL (the gif written out as text), which can be sent to
+// Google's page in a message and used directly in its CSS.
 const downloadNext = async () => {
   // The browser stops this background script after 30s with no extension calls, even mid-download,
   // so a cheap call every 20s keeps it running on a slow connection.
   const keepAlive = setInterval(chrome.runtime.getPlatformInfo, 20e3);
   try {
-    const next = await fetch(CAT_URL);
-    if (!next.ok) return;
-    const cat = `data:${next.headers.get("content-type")};base64,${new Uint8Array(await next.arrayBuffer()).toBase64()}`;
-    await (await caches.open("cat-urls")).put(CAT_URL, new Response(cat));
+    const gif = await fetch(CAT_URL);
+    if (!gif.ok) return; // Keep the saved cat rather than save an error page
+    const type = gif.headers.get("content-type");
+    const base64 = new Uint8Array(await gif.arrayBuffer()).toBase64();
+    const cat = `data:${type};base64,${base64}`;
+    await chrome.storage.local.set({ cat });
+    return cat;
   } finally {
     clearInterval(keepAlive);
   }
 };
 
-// Version 2.0 saved the raw gif in "cats". It's no longer read, so free the space.
-chrome.runtime.onInstalled.addListener(() => caches.delete("cats"));
-
-// content.js asks for a cat and gets it back as a data URL. Google's page can't
-// read the extension's saved downloads, but it can show a data URL.
+// Returns the saved cat, and starts downloading the next one.
 const getCat = async () => {
-  const cache = await caches.open("cat-urls");
-  let cat = await cache.match(CAT_URL);
   // A failed download is ignored: the saved cat stays, and the next tab tries again.
-  downloading ??= downloadNext().catch(() => {}).finally(() => (downloading = null));
+  const next = downloadNext().catch(() => {});
+  const { cat } = await chrome.storage.local.get("cat");
   // Very first tab (nothing saved yet): wait for the download.
-  if (!cat) cat = await downloading.then(() => cache.match(CAT_URL));
-  return cat?.text();
+  return cat ?? (await next);
 };
 
+// content.js asks for a cat. Always reply, even if something fails, so the tab isn't left waiting.
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  // Always reply, even if reading the saved cat fails, so the tab isn't left waiting.
   getCat().then(sendResponse, () => sendResponse());
   return true; // Keep the message open until we reply
 });
