@@ -17,22 +17,6 @@ chrome.tabs.onCreated.addListener((tab) => {
 // in the background, ready for the following tab.
 
 const CAT_URL = "https://cataas.com/cat/gif";
-const FONTS = ["Andale Mono", "Impact", "Arial", "Arial Black", "Comic Sans MS", "Courier New", "Georgia", "Times New Roman", "Verdana"];
-const random = (n) => Math.floor(Math.random() * n);
-
-// With a name saved in the options page, the cat says hello in a random font, size and colour.
-// Full saturation and 60% lightness keep every random colour bright enough to read.
-const catUrl = (name) => {
-  if (!name) return CAT_URL;
-  const style = new URLSearchParams({
-    font: FONTS[random(FONTS.length)],
-    fontSize: 30 + random(21),
-    fontColor: `hsl(${random(360)}, 100%, 60%)`,
-  });
-  // cataas puts the text into an image template without escaping it, so "&" or "<" in a name would break it
-  const text = `Hello ${name}`.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
-  return `${CAT_URL}/says/${encodeURIComponent(text)}?${style}`;
-};
 
 // Downloads a new cat, saves it for the next tab and returns it.
 // The gif is saved as base64 (its bytes written out as text), since messages to
@@ -42,8 +26,7 @@ const downloadNext = async () => {
   // so a cheap call every 20s keeps it running on a slow connection.
   const keepAlive = setInterval(chrome.runtime.getPlatformInfo, 20e3);
   try {
-    const { name } = await chrome.storage.sync.get("name");
-    const gif = await fetch(catUrl(name));
+    const gif = await fetch(CAT_URL);
     if (!gif.ok) return; // Keep the saved cat rather than save an error page
     const type = gif.headers.get("content-type");
     const base64 = new Uint8Array(await gif.arrayBuffer()).toBase64();
