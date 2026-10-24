@@ -1,6 +1,7 @@
 // Chromium doesn't let extensions change its built-in new tab page, so new tabs
 // are sent to the browser's own search homepage instead (Brave Search in Brave,
 // Google otherwise), where content.js adds the cat.
+// (Not Bing in Edge: Edge doesn't let extensions run on Bing.)
 // Only blank new tabs are redirected, not links opened in a new tab.
 const isBrave = navigator.userAgentData?.brands.some(({ brand }) => brand === "Brave");
 const HOMEPAGE = isBrave ? "https://search.brave.com/" : "https://www.google.com/";
