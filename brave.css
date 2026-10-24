@@ -1,0 +1,17 @@
+/* Brave Search covers the page background (where style.css puts the cat),
+   so clear what sits on top of it. */
+
+/* A full-screen dark layer behind the search box */
+.ntp-background-clip {
+  display: none !important;
+}
+
+/* A soft glow behind the logo and search box (white in light mode, dark in dark mode) */
+.ntp-searchbox::before {
+  display: none !important;
+}
+
+/* The footer's solid strip along the bottom of the page */
+footer {
+  background: none !important;
+}

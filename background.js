@@ -1,9 +1,14 @@
 // Chromium doesn't let extensions change its built-in new tab page, so new tabs
-// are sent to the Google homepage instead, where content.js adds the cat.
+// are sent to the browser's own search homepage instead (Brave Search in Brave,
+// Google otherwise), where content.js adds the cat.
+// (Not Bing in Edge: Edge doesn't let extensions run on Bing.)
 // Only blank new tabs are redirected, not links opened in a new tab.
+const isBrave = navigator.userAgentData?.brands.some(({ brand }) => brand === "Brave");
+const HOMEPAGE = isBrave ? "https://search.brave.com/" : "https://www.google.com/";
+
 chrome.tabs.onCreated.addListener((tab) => {
   if (/^(chrome|brave|edge):\/\/newtab\/$/.test(tab.pendingUrl ?? tab.url)) {
-    chrome.tabs.update(tab.id, { url: "https://www.google.com/" });
+    chrome.tabs.update(tab.id, { url: HOMEPAGE });
   }
 });
 
@@ -31,7 +36,7 @@ const catUrl = (name) => {
 
 // Downloads a new cat, saves it for the next tab and returns it.
 // The gif is saved as base64 (its bytes written out as text), since messages to
-// Google's page can only carry text. content.js turns it back into a gif.
+// the search page can only carry text. content.js turns it back into a gif.
 const downloadNext = async () => {
   // The browser stops this background script after 30s with no extension calls, even mid-download,
   // so a cheap call every 20s keeps it running on a slow connection.

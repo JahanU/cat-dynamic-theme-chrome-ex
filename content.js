@@ -1,4 +1,4 @@
-// Runs on the Google homepage. Asks background.js for a cat and hands it to style.css.
+// Runs on the search homepage (Google or Brave Search). Asks background.js for a cat and hands it to style.css.
 chrome.runtime.sendMessage("cat", (cat) => {
   if (!cat) return;
   // Turn the text back into the gif, and give CSS a short blob: URL pointing at it.
