@@ -1,8 +1,6 @@
 // Chromium doesn't let extensions change its built-in new tab page, so new tabs
 // are sent to the browser's own search homepage instead (Brave Search in Brave,
 // Google otherwise), where content.js adds the cat.
-// (Not Bing in Edge: Edge doesn't let extensions run on Bing.)
-// Only blank new tabs are redirected, not links opened in a new tab.
 const isBrave = navigator.userAgentData?.brands.some(({ brand }) => brand === "Brave");
 const HOMEPAGE = isBrave ? "https://search.brave.com/" : "https://www.google.com/";
 
@@ -22,6 +20,10 @@ const TIMEOUT = 2 * 60 * 1000; // 2 minutes
 // Messages to the tab are capped at 64MB, and base64 makes the gif a third bigger,
 // so a gif over 40MB couldn't be sent to the tab
 const MAX_SIZE = 40 * 1000 * 1000; // 40MB
+
+// The saved cat, also kept in memory while this script runs, so each tab
+// doesn't re-read megabytes from storage. Storage is only read after a restart.
+let savedCat = null;
 
 // Downloads a new cat, saves it for the next tab and returns it.
 // The gif is saved as base64 (its bytes written out as text), since messages to
@@ -51,10 +53,6 @@ const downloadNext = async () => {
 // instead of starting a second one.
 let downloading = null;
 
-// The saved cat, also kept in memory while this script runs, so each tab
-// doesn't re-read megabytes from storage. Storage is only read after a restart.
-let savedCat = null;
-
 // Returns the saved cat, and starts downloading the next one.
 const getCat = async () => {
   if (!downloading) {
@@ -64,7 +62,7 @@ const getCat = async () => {
   const next = downloading; // Kept here, as `downloading` is cleared once it finishes
   if (!savedCat) {
     const { cat } = await chrome.storage.local.get("cat");
-    savedCat ??= cat; // Unless a download finished while we were reading
+    savedCat ??= cat; // If a download finished while we were reading, keep that newer cat
   }
   // Very first tab (nothing saved yet): wait for the download.
   return savedCat ?? (await next);
