@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Tabby Tab – Cat wallpaper",
-  "version": "2.1",
-  "description": "Tabby Tab – Cat wallpaper",
+  "name": "Tabby Tab – Cat Wallpaper",
+  "version": "2.2",
+  "description": "Tabby Tab – Cat Wallpaper",
   "icons": {
     "16": "cat.png",
     "48": "cat.png",

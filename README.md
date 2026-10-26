@@ -1,4 +1,4 @@
-# Tabby Tab – Cat wallpaper
+# Tabby Tab – Cat Wallpaper
 
 A browser extension that puts a random cat gif behind your search page every time you open a new tab.
 
