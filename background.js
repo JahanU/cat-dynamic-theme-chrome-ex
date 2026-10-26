@@ -40,6 +40,7 @@ const downloadNext = async () => {
     const base64 = bytes.toBase64();
     const cat = { type, base64 };
     await chrome.storage.local.set({ cat });
+    savedCat = cat;
     return cat;
   } finally {
     clearInterval(keepAlive);
@@ -50,6 +51,10 @@ const downloadNext = async () => {
 // instead of starting a second one.
 let downloading = null;
 
+// The saved cat, also kept in memory while this script runs, so each tab
+// doesn't re-read megabytes from storage. Storage is only read after a restart.
+let savedCat = null;
+
 // Returns the saved cat, and starts downloading the next one.
 const getCat = async () => {
   if (!downloading) {
@@ -57,9 +62,12 @@ const getCat = async () => {
     downloading = downloadNext().catch(() => {}).finally(() => (downloading = null));
   }
   const next = downloading; // Kept here, as `downloading` is cleared once it finishes
-  const { cat } = await chrome.storage.local.get("cat");
+  if (!savedCat) {
+    const { cat } = await chrome.storage.local.get("cat");
+    savedCat ??= cat; // Unless a download finished while we were reading
+  }
   // Very first tab (nothing saved yet): wait for the download.
-  return cat ?? (await next);
+  return savedCat ?? (await next);
 };
 
 // content.js asks for a cat. Always reply, even if something fails, so the tab isn't left waiting.
